@@ -1,0 +1,46 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-app
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: express
+  template:
+    metadata:
+      labels:
+        app: express
+    spec:
+      nodeSelector:
+        role: app # Targeting Worker Node 1
+      containers:
+        - name: express
+          image: your-express-app-image:latest # Replace with your actual image
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://prisma:prisma123@postgres-service:5432/mydatabase"
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-service
+  namespace: myapp
+spec:
+  selector:
+    app: express
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
