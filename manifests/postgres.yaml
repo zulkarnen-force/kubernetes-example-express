@@ -17,8 +17,6 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: psql-pvc
-      nodeSelector:
-        role: db
       containers:
         - name: postgres
           image: postgres:15
