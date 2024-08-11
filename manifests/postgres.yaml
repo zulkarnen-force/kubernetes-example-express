@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: psql-pvc
+spec:
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,3 +45,11 @@ spec:
             requests:
               memory: 256Mi
               cpu: "0.2"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+              claimName: psql-pvc
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: psql-pvc
