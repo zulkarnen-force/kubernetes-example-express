@@ -17,6 +17,8 @@ metadata:
   name: postgres
   namespace: myapp
 spec:
+  nodeSelector:
+    role: db
   replicas: 1
   selector:
     matchLabels:
