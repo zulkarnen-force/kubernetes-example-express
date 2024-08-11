@@ -51,13 +51,20 @@ spec:
                     values:
                       - db
           preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
+            - weight: 2
               preference:
                 matchExpressions:
                   - key: role
                     operator: In
                     values:
                       - db
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - app
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
