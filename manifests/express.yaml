@@ -5,8 +5,6 @@ metadata:
   namespace: myapp
 spec:
   replicas: 1
-  nodeSelector:
-    role: app
   selector:
     matchLabels:
       app: express
@@ -15,6 +13,8 @@ spec:
       labels:
         app: express
     spec:
+      nodeSelector:
+        role: app
       containers:
         - name: express
           image: zulkarnen/example-express:latest # Replace with your actual image

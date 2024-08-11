@@ -17,8 +17,6 @@ metadata:
   name: postgres
   namespace: myapp
 spec:
-  nodeSelector:
-    role: db
   replicas: 1
   selector:
     matchLabels:
@@ -28,6 +26,8 @@ spec:
       labels:
         app: postgres
     spec:
+      nodeSelector:
+        role: db
       containers:
         - name: postgres
           image: postgres:15
