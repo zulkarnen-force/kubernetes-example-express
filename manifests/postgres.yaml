@@ -48,6 +48,7 @@ spec:
                     operator: In
                     values:
                       - db
+                      - app
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 2
               preference:
