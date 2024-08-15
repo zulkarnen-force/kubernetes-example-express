@@ -130,13 +130,24 @@ app.get("/healthz", (req, res) => {
   res.status(200).send("OK");
 });
 
-// Readiness check endpoint
+// readyz endpoint - checks if the application is ready by querying the user table
 app.get("/readyz", async (req, res) => {
   try {
-    await prisma.$queryRaw`SELECT 1`; // Simple query to check database connection
-    res.status(200).send("OK");
+    // Perform a simple query to check if the database connection is working
+    const users = await prisma.user.findMany({
+      take: 1, // Limit the query to 1 user
+    });
+
+    // If the query is successful and returns a result, the application is ready
+    if (users.length > 0) {
+      res.status(200).json({ status: "Ready" });
+    } else {
+      // If the query returns no users, consider the app ready
+      res.status(200).json({ status: "Ready, but no users found" });
+    }
   } catch (error) {
-    res.status(500).send("Not Ready");
+    // If the query fails, the application is not ready
+    res.status(503).json({ status: "Not Ready", error: error.message });
   }
 });
 
